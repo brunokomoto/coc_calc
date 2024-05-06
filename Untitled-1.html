@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de poção</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: url("C:\Users\Pichau\Downloads\thumbnail_ad1df87498d6e17130441c17b8d51080.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+    }
+    
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-weight: bold;
+        color: #555;
+    }
+    
+    input[type="number"],
+    select,
+    button {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 16px;
+        box-sizing: border-box; /* Adicionado para garantir que a largura inclua o padding e a borda */
+    }
+    
+    select {
+        appearance: none;
+        background-color: #f9f9f9;
+    }
+    
+    button {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    button:hover {
+        background-color: #45a049;
+    }
+    
+    #resultado {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    #textoResultado {
+        font-size: 18px;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Calculadora de Poção</h2>
+    <form id="form">
+        <label for="horas">Horas:</label><br>
+        <input type="number" id="horas" name="horas" value="0"><br>
+
+        <label for="minutos">Minutos:</label><br>
+        <input type="number" id="minutos" name="minutos" value="0"><br>
+
+        <label for="duracaoInput" id="labelDuracao" style="display: none;">Duração da Torre de Relógios (em minutos)</label><br>
+        <input type="number" id="duracaoInput" name="duracao" value="0" style="display: none;"><br>
+        
+        <label for="opcao">Boost:</label><br>
+        <select id="opcao" name="opcao" onchange="mostrarCaixaDeTexto()">
+            <option value="principal">Principal</option>
+            <option value="construtor">Construtor</option>
+            <option value="laboratorio">Laboratório</option>
+        </select><br><br>
+        
+        <button type="button" onclick="mostrarResultado()">Calcular</button>
+    </form>
+    
+    <div id="resultado" style="display: none;">
+        <h3>Resultado:</h3>
+        <p id="textoResultado"></p>
+    </div>
+</div>
+
+<script>
+    function mostrarCaixaDeTexto() {
+        var opcaoSelecionada = document.getElementById("opcao").value;
+        var labelDuracao = document.getElementById("labelDuracao");
+        var duracaoInput = document.getElementById("duracaoInput");
+        
+        if (opcaoSelecionada == "construtor") {
+            labelDuracao.style.display = "block";
+            duracaoInput.style.display = "block";
+        } else {
+            labelDuracao.style.display = "none";
+            duracaoInput.style.display = "none";
+        }
+    }
+    
+    function mostrarResultado() {
+        var horas = Math.trunc(document.getElementById("horas").value) * 60;
+        var minutos = Math.trunc(document.getElementById("minutos").value);
+        var opcao = document.getElementById("opcao").value;
+        var soma = horas + minutos
+        var somaVilas = (((horas + minutos) / 10) / 60);
+        var somaPesquisa = (((horas + minutos) / 24) / 60);
+        var horasVilas = Math.trunc(somaVilas);
+        var minutosVilas = Math.floor((somaVilas - horasVilas) * 60);
+        var horasPesquisa = Math.trunc(somaPesquisa);
+        var minutosPesquisa = Math.floor((somaPesquisa - horasPesquisa) * 60);
+        var restantePrincipal = soma - 600
+            if (restantePrincipal <= 0){
+                var horasRestantesPrincipal = 0
+                var minutosRestantesPrincipal = 0
+            }   else{
+                var horasRestantesPrincipal = Math.trunc(restantePrincipal / 60)
+                var minutosRestantesPrincipal = Math.trunc((((restantePrincipal / 60) - horasRestantesPrincipal)) * 60)
+            }
+        var restanteConstrutor = soma - (document.getElementById("duracaoInput").value)
+            if (restanteConstrutor <= 0){
+                var horasRestantesConstrutor = 0
+                var minutosRestantesConstrutor = 0
+            }   else{
+                var horasRestantesConstrutor = Math.trunc(restanteConstrutor / 60)
+                var minutosRestantesConstrutor = Math.trunc(((restanteConstrutor / 60) - horasRestantesConstrutor) * 60)
+            }
+        var restantePesquisa = soma - 1440
+            if (restantePesquisa <= 0){
+                var horasRestantesPesquisa = 0
+                var minutosRestantesPesquisa = 0
+            }   else{
+                var horasRestantesPesquisa = Math.trunc(restantePesquisa / 60)
+                var minutosRestantesPesquisa = Math.trunc((((restantePesquisa / 60) - horasRestantesPesquisa)) * 60)
+            }
+
+        if(opcao == "principal") {
+                var textoResultado = "Caso utilize poções o suficiente, a construção será realizada em: " + horasVilas + "h e " + minutosVilas + "min. </br></br>Caso use apenas uma, restará: " + horasRestantesPrincipal + "h " + "e " + minutosRestantesPrincipal + "min para concluir a construção. <br></br>";
+            } else if (opcao == "construtor"){
+                var textoResultado = "Caso tenha tempo o suficiente na torre de relógios, a construção será realizada em: " + horasVilas + "h e " + minutosVilas + "min. </br></br>Caso contrário, restará: " + horasRestantesConstrutor + "h " + "e " + minutosRestantesConstrutor + "min para concluir a construção. <br></br>";
+            } else if (opcao == "laboratorio"){
+                var textoResultado = "Caso utilize poções o suficiente, a pesquisa será realizada em: " + horasPesquisa + "h e " + minutosPesquisa + "min. </br></br>Caso use apenas uma, restará: " + horasRestantesPesquisa + "h " + "e " + minutosRestantesPesquisa + "min para concluir a pesquisa. <br></br>";
+            }
+        
+        document.getElementById("textoResultado").innerHTML = textoResultado;
+        document.getElementById("resultado").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
